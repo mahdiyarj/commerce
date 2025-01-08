@@ -1,13 +1,14 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .models import Invoice, InvoiceItem, Product
+from .models import Invoice, InvoiceItem, Product, Transaction
 from .serializers import (
     AddInvoiceItemSerializer,
     CreateInvoiceSerializer,
     InvoiceItemSerializer,
     InvoiceSerializer,
     ProductSerializer,
+    TransactionSerializer,
 )
 
 
@@ -54,3 +55,9 @@ class InvoiceItemViewSet(ModelViewSet):
         return InvoiceItem.objects.filter(
             invoice_id=self.kwargs["invoice_pk"]
         ).select_related("product")
+
+
+class TransactionViewSet(ModelViewSet):
+    http_method_names = ["get", "post"]
+    queryset = Transaction.objects.all()
+    serializer_class = TransactionSerializer
