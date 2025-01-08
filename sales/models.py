@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
 
+from .storage_backends import ProductImageStorage
+
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
@@ -16,6 +18,15 @@ class Product(models.Model):
     )
     inventory = models.IntegerField(validators=[MinValueValidator(0)])
     last_update = models.DateTimeField(auto_now=True)
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="images"
+    )
+    image = models.ImageField(
+        storage=ProductImageStorage(), upload_to="", blank=True, null=True
+    )
 
 
 class Invoice(models.Model):
