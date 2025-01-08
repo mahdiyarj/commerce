@@ -1,7 +1,18 @@
-from django.db import transaction
+from djoser.serializers import UserCreateSerializer as BaseUserCreateSerializer
+from djoser.serializers import UserSerializer as BaseUserSerializer
 from rest_framework import serializers
 
 from .models import Invoice, InvoiceItem, Product, User
+
+
+class UserCreateSerializer(BaseUserCreateSerializer):
+    class Meta(BaseUserCreateSerializer.Meta):
+        fields = ["id", "username", "password", "email", "first_name", "last_name"]
+
+
+class UserSerializer(BaseUserSerializer):
+    class Meta(BaseUserSerializer.Meta):
+        fields = ["id", "username", "email", "first_name", "last_name"]
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -82,3 +93,10 @@ class InvoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Invoice
         fields = ["id", "user", "created_at", "items", "total_price"]
+
+
+class CreateInvoiceSerializer(serializers.Serializer):
+    def save(self, **kwargs):
+        invoice = Invoice.objects.create(user_id=self.context["user_id"])
+
+        return invoice

@@ -4,7 +4,7 @@ from . import views
 
 router = DefaultRouter()
 router.register("products", views.ProductViewSet, basename="products")
-router.register("invoices", views.InvoiceViewSet)
+router.register("invoices", views.InvoiceViewSet, basename="invoices")
 
 invoices_router = NestedDefaultRouter(router, "invoices", lookup="invoice")
 invoices_router.register("items", views.InvoiceItemViewSet, basename="invoice-items")

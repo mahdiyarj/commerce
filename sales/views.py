@@ -1,9 +1,10 @@
-from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
-from rest_framework.viewsets import GenericViewSet, ModelViewSet
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from .models import Invoice, InvoiceItem, Product
 from .serializers import (
     AddInvoiceItemSerializer,
+    CreateInvoiceSerializer,
     InvoiceItemSerializer,
     InvoiceSerializer,
     ProductSerializer,
@@ -15,11 +16,27 @@ class ProductViewSet(ModelViewSet):
     serializer_class = ProductSerializer
 
 
-class InvoiceViewSet(
-    CreateModelMixin, RetrieveModelMixin, ListModelMixin, GenericViewSet
-):
-    queryset = Invoice.objects.prefetch_related("items__product").all()
-    serializer_class = InvoiceSerializer
+class InvoiceViewSet(ModelViewSet):
+    http_method_names = ["get", "post", "head", "options"]
+
+    def get_queryset(self):
+        return Invoice.objects.prefetch_related("items__product").filter(
+            user_id=self.request.user.id
+        )
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return CreateInvoiceSerializer
+        return InvoiceSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = CreateInvoiceSerializer(
+            data=request.data, context={"user_id": self.request.user.id}
+        )
+        serializer.is_valid(raise_exception=True)
+        invoice = serializer.save()
+        serializer = InvoiceSerializer(invoice)
+        return Response(serializer.data)
 
 
 class InvoiceItemViewSet(ModelViewSet):

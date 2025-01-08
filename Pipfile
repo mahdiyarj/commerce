@@ -8,6 +8,8 @@ django = "*"
 djangorestframework = "*"
 psycopg2-binary = "*"
 drf-nested-routers = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"
