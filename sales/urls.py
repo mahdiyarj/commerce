@@ -1,9 +1,13 @@
-from rest_framework.routers import DefaultRouter
+from rest_framework_nested.routers import DefaultRouter, NestedDefaultRouter
 
 from . import views
 
 router = DefaultRouter()
-router.register("products", views.ProductViewSet)
+router.register("products", views.ProductViewSet, basename="products")
+router.register("invoices", views.InvoiceViewSet)
+
+invoices_router = NestedDefaultRouter(router, "invoices", lookup="invoice")
+invoices_router.register("items", views.InvoiceItemViewSet, basename="invoice-items")
 
 
-urlpatterns = router.urls
+urlpatterns = router.urls + invoices_router.urls

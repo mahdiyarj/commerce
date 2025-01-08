@@ -29,11 +29,15 @@ class InvoiceItem(models.Model):
         Product, on_delete=models.PROTECT, related_name="invoiceitems"
     )
     quantity = models.PositiveSmallIntegerField()
-    unit_price = models.DecimalField(max_digits=12, decimal_places=0)
+    unit_price = models.DecimalField(
+        max_digits=12, decimal_places=0, validators=[MinValueValidator(1)]
+    )
 
 
 class Transaction(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     invoice = models.ForeignKey(Invoice, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)
-    amount = models.DecimalField(max_digits=12, decimal_places=0)
+    amount = models.DecimalField(
+        max_digits=12, decimal_places=0, validators=[MinValueValidator(1)]
+    )
