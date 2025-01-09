@@ -18,10 +18,16 @@ Including another URLconf
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import SpectacularSwaggerView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("sales/", include("sales.urls")),
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
 ] + debug_toolbar_urls()

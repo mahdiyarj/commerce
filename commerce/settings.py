@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "debug_toolbar",
     "djoser",
+    "debug_toolbar",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     "sales",
 ]
 
@@ -143,6 +145,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
@@ -157,6 +160,14 @@ DJOSER = {
         "current_user": "sales.serializers.UserSerializer",
     },
     "USER_CREATE_PASSWORD_RETYPE": True,
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Commerce API",
+    "DESCRIPTION": "Payment and Product Management System",
+    "VERSION": "1.0.0",
+    "SWAGGER_UI_DIST": "SIDECAR",
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
 }
 
 

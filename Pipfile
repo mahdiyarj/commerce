@@ -10,9 +10,9 @@ psycopg2-binary = "*"
 drf-nested-routers = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
-django-storages = "*"
-boto3 = "*"
 pillow = "*"
+drf-spectacular = {extras = ["sidecar"], version = "*"}
+django-storages = {extras = ["s3"], version = "*"}
 
 [dev-packages]
 django-debug-toolbar = "*"
