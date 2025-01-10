@@ -18,13 +18,22 @@ Including another URLconf
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
 from django.urls import include, path
-from drf_spectacular.views import SpectacularSwaggerView
+from djoser.views import UserViewSet
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from rest_framework_simplejwt.views import token_blacklist, token_obtain_pair
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("sales/", include("sales.urls")),
-    path("auth/", include("djoser.urls")),
-    path("auth/", include("djoser.urls.jwt")),
+    path("register/", UserViewSet.as_view({"post": "create"}), name="register"),
+    path("login/", token_obtain_pair, name="login"),
+    path("logout/", token_blacklist, name="token_blacklist"),
+    path(
+        "profile/",
+        UserViewSet.as_view({"get": "me", "patch": "me", "put": "me"}),
+        name="profile",
+    ),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
         "api/docs/",
         SpectacularSwaggerView.as_view(url_name="schema"),

@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_filters",
     "djoser",
+    "rest_framework_simplejwt.token_blacklist",
     "debug_toolbar",
     "drf_spectacular",
     "drf_spectacular_sidecar",
@@ -168,6 +170,7 @@ SPECTACULAR_SETTINGS = {
     "VERSION": "1.0.0",
     "SWAGGER_UI_DIST": "SIDECAR",
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 

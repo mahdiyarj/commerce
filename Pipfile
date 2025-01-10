@@ -13,9 +13,13 @@ djangorestframework-simplejwt = "*"
 pillow = "*"
 drf-spectacular = {extras = ["sidecar"], version = "*"}
 django-storages = {extras = ["s3"], version = "*"}
+django-filter = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"
+pytest = "*"
+pytest-django = "*"
+model-bakery = "*"
 
 [requires]
 python_version = "3.13"

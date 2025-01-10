@@ -36,7 +36,7 @@ class ProductSerializer(serializers.ModelSerializer):
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ["id", "title"]
+        fields = ["id", "title", "price"]
 
 
 class InvoiceItemSerializer(serializers.ModelSerializer):
@@ -44,7 +44,7 @@ class InvoiceItemSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField()
 
     def get_total_price(self, invoice_item: InvoiceItem):
-        return invoice_item.quantity * invoice_item.unit_price
+        return invoice_item.quantity * invoice_item.product.price
 
     class Meta:
         model = InvoiceItem
@@ -83,9 +83,8 @@ class AddInvoiceItemSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "product_id",
-            "unit_price",
             "quantity",
-        ]  # TODO Default value for unit_price from product
+        ]
 
 
 class InvoiceSerializer(serializers.ModelSerializer):

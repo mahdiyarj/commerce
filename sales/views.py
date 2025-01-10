@@ -1,7 +1,14 @@
+from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema
+from rest_framework import status
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from .filters import ProductFilter
 from .models import Invoice, InvoiceItem, Product, ProductImage, Transaction
+from .pagination import DefaultPagination
+from .permissions import IsAdminOrReadOnly
 from .serializers import (
     AddInvoiceItemSerializer,
     CreateInvoiceSerializer,
@@ -13,11 +20,33 @@ from .serializers import (
 )
 
 
+@extend_schema(tags=["Products"])
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.prefetch_related("images").all()
     serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_class = ProductFilter
+    pagination_class = DefaultPagination
+    permission_classes = [IsAdminOrReadOnly]
+    search_fields = ["title", "description"]
+    ordering_fields = ["price", "last_update"]
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+    def destroy(self, request, *args, **kwargs):
+        if InvoiceItem.objects.filter(product_id=kwargs["pk"]).count() > 0:
+            return Response(
+                {
+                    "error": "Product cannot be deleted because it is associated with an invoice item."
+                },
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+            )
+
+        return super().destroy(request, *args, **kwargs)
 
 
+@extend_schema(tags=["Product Images"])
 class ProductImageViewSet(ModelViewSet):
     serializer_class = ProductImageSerializer
 
@@ -28,6 +57,7 @@ class ProductImageViewSet(ModelViewSet):
         return ProductImage.objects.filter(product_id=self.kwargs["product_pk"])
 
 
+@extend_schema(tags=["Invoices"])
 class InvoiceViewSet(ModelViewSet):
     http_method_names = ["get", "post", "head", "options"]
 
@@ -51,6 +81,7 @@ class InvoiceViewSet(ModelViewSet):
         return Response(serializer.data)
 
 
+@extend_schema(tags=["Invoice Items"])
 class InvoiceItemViewSet(ModelViewSet):
     http_method_names = ["get", "post"]
 
@@ -68,7 +99,10 @@ class InvoiceItemViewSet(ModelViewSet):
         ).select_related("product")
 
 
+@extend_schema(tags=["Transactions"])
 class TransactionViewSet(ModelViewSet):
     http_method_names = ["get", "post"]
-    queryset = Transaction.objects.all()
     serializer_class = TransactionSerializer
+
+    def get_queryset(self):
+        return Transaction.objects.filter(user_id=self.request.user.id)
