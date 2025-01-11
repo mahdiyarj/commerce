@@ -33,22 +33,29 @@ cd commerce
 
 2. Copy environment files:
 
-   cp docker/.env/.env.example docker/.env/.dev
-   cp docker/.env/.env.example docker/.env/.prod
+```bash
+cp docker/.env/.env.example docker/.env/.dev
+cp docker/.env/.env.example docker/.env/.prod
+```
 
 3. Update environment variables in .env/.dev and .env/.prod
 
-🚀 Running the Application
+## 🚀 Running the Application
 
 Development
 
+```bash
 make dev
+
+```
 
 Production
 
+```bash
 make prod
+```
 
-🔧 Available Make Commands
+## 🔧 Available Make Commands
 
 make build - Build Docker images
 make up - Start development services
@@ -59,7 +66,7 @@ make shell - Open Django shell
 make migrate - Run migrations
 make clean - Remove all containers and images
 
-📁 Project Structure
+## 📁 Project Structure
 
 commerce/
 ├── commerce/ # Django project configuration
@@ -71,12 +78,16 @@ commerce/
 │ └── .env/ # Environment variables
 └── tests/ # Test suite
 
-API Endpoints
+## API Endpoints
 
 /api/v1/sales/ - Sales endpoints
 /api/v1/auth/ - Authentication endpoints
 
 Complete API documentation available at /api/docs/
 
-🧪 Running Tests
+## 🧪 Running Tests
+
+```bash
 make test
+
+```
