@@ -1,0 +1,31 @@
+services:
+  db:
+    environment:
+      POSTGRES_DB: commerce
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: M.j.512296
+    ports:
+      - "5432:5432"
+
+  web:
+    command: ["./docker/scripts/entrypoint.sh"]
+    volumes:
+      - ../..:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - DATABASE_HOST=db
+      - DATABASE_NAME=commerce
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=M.j.512296
+      - DJANGO_SETTINGS_MODULE=commerce.settings.dev
+
+  minio:
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"

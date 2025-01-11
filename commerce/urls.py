@@ -25,11 +25,11 @@ from rest_framework_simplejwt.views import token_blacklist, token_obtain_pair
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("sales/", include("sales.urls")),
-    path("register/", UserViewSet.as_view({"post": "create"}), name="register"),
-    path("login/", token_obtain_pair, name="login"),
-    path("logout/", token_blacklist, name="token_blacklist"),
+    path("users/register/", UserViewSet.as_view({"post": "create"}), name="register"),
+    path("users/login/", token_obtain_pair, name="login"),
+    path("users/logout/", token_blacklist, name="token_blacklist"),
     path(
-        "profile/",
+        "users/profile/",
         UserViewSet.as_view({"get": "me", "patch": "me", "put": "me"}),
         name="profile",
     ),

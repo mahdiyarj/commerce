@@ -14,6 +14,7 @@ pillow = "*"
 drf-spectacular = {extras = ["sidecar"], version = "*"}
 django-storages = {extras = ["s3"], version = "*"}
 django-filter = "*"
+python-dotenv = "*"
 
 [dev-packages]
 django-debug-toolbar = "*"

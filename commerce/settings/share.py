@@ -10,27 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-lcivrb*$=fq(5wn+5-nwo6st51f^2!f$xoacyw0qtv^j_o#m-v"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
 
 # Application definition
 
@@ -45,14 +31,12 @@ INSTALLED_APPS = [
     "django_filters",
     "djoser",
     "rest_framework_simplejwt.token_blacklist",
-    "debug_toolbar",
     "drf_spectacular",
     "drf_spectacular_sidecar",
     "sales",
 ]
 
 MIDDLEWARE = [
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -81,21 +65,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "commerce.wsgi.application"
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "commerce",
-        "USER": "postgres",
-        "PASSWORD": "M.j.512296",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
 
 
 # Password validation
@@ -151,8 +120,10 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": ("Bearer",),
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "AUTH_HEADER_TYPES": (os.environ.get("JWT_AUTH_HEADER_TYPE", "Bearer"),),
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        days=int(os.environ.get("JWT_ACCESS_TOKEN_LIFETIME", 1))
+    ),
 }
 
 
@@ -172,12 +143,3 @@ SPECTACULAR_SETTINGS = {
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
     "SERVE_INCLUDE_SCHEMA": False,
 }
-
-
-PRODUCT_IMAGE_STORAGE_BACKEND_ACCESS_KEY = "minioadmin"
-PRODUCT_IMAGE_STORAGE_BACKEND_SECRET_KEY = "minioadmin"
-PRODUCT_IMAGE_STORAGE_BACKEND_BUCKET_NAME = "products-images"
-PRODUCT_IMAGE_STORAGE_BACKEND_ENDPOINT_URL = "http://localhost:9000"
-
-
-MAX_IMAGE_SIZE_KB = 1_000

@@ -1,10 +1,10 @@
 from django.core.exceptions import ValidationError
 
-from commerce import settings
+from commerce.settings import share
 
 
 def validate_image_size(image):
-    max_size_kb = settings.MAX_IMAGE_SIZE_KB
+    max_size_kb = share.MAX_IMAGE_SIZE_KB
 
     if image.size > max_size_kb * 1024:
         raise ValidationError(f"Images cannot be larger than {max_size_kb}KB!")
