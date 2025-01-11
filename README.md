@@ -27,7 +27,7 @@ A modern e-commerce REST API built with Django REST Framework.
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/mahdiyarj/commerce.git
 cd commerce
 ```
 
