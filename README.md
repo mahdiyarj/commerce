@@ -68,20 +68,9 @@ make clean - Remove all containers and images
 
 ## 📁 Project Structure
 
-commerce/
-├── commerce/ # Django project configuration
-│ └── settings/ # Split settings for dev/prod
-├── sales/ # Main application module
-├── docker/ # Docker configuration
-│ ├── compose/ # Docker compose files
-│ ├── scripts/ # Entrypoint scripts
-│ └── .env/ # Environment variables
-└── tests/ # Test suite
+<pre> commerce/ ├── commerce/ # Django project configuration │ ├── settings/ # Split settings for dev/prod │ │ ├── [dev.py](http://_vscodecontentref_/1) │ │ ├── prod.py │ │ └── [share.py](http://_vscodecontentref_/2) │ ├── [urls.py](http://_vscodecontentref_/3) │ └── wsgi.py ├── sales/ # Main application module │ ├── models.py │ ├── [views.py](http://_vscodecontentref_/4) │ ├── [serializers.py](http://_vscodecontentref_/5) │ └── tests/ ├── docker/ # Docker configuration │ ├── compose/ # Docker compose files │ │ ├── [compose.yml](http://_vscodecontentref_/6) │ │ ├── [compose.dev.yml](http://_vscodecontentref_/7) │ │ └── [compose.prod.yml](http://_vscodecontentref_/8) │ ├── scripts/ # Entrypoint scripts │ │ ├── entrypoint.dev.sh │ │ └── entrypoint.prod.sh │ └── .env/ # Environment variables │ ├── .dev │ └── .prod ├── Dockerfile ├── Pipfile └── [manage.py](http://_vscodecontentref_/9) </pre>
 
-## API Endpoints
-
-/api/v1/sales/ - Sales endpoints
-/api/v1/auth/ - Authentication endpoints
+## API Endpoints Doc
 
 Complete API documentation available at /api/docs/
 
@@ -89,5 +78,4 @@ Complete API documentation available at /api/docs/
 
 ```bash
 make test
-
 ```
